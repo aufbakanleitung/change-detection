@@ -17,15 +17,13 @@ def check_website(url, check_line, original_element):
         return True
 
 
-sns = boto3.client('sns')
-
 def lambda_handler(event, context):
     url = event['url']
     check_line = event['check_line']
     original_element = event['original_element']
 
     if check_website(url, check_line, original_element):
-        sns.publish(PhoneNumber=event['phone'], Message=event['message'])
+        boto3.client('sns').publish(PhoneNumber=event['phone'], Message=event['message'])
         return 'Change found!'
     else:
         return 'No changes detected'
