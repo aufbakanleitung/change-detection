@@ -1,0 +1,18 @@
+name: Lambda-zip-python
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Py Lambda Deploy
+        uses: mariamrf/py-lambda-action@1.0.1
+        with:
+          requirements_txt: requirements.txt
+          lambda_layer_arn: 'arn:aws:lambda:eu-west-1:331730032056:layer:change-detect-layer'
+          lambda_function_name: change-detect
