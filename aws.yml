@@ -1,0 +1,19 @@
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@master
+    - name: Deploy code to Lambda
+      uses: qubitro/action-lambda-python-zip@v1.0
+      with:
+        lambda_role_arn: 'arn:aws:iam::331730032056:role/lambda-website-change-detect'
+        lambda_function_name: ${{ secrets.LAMBDA_FUNCTION_NAME }}
+        lambda_region: 'eu-west-1'
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
