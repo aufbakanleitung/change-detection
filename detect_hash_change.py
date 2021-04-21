@@ -29,6 +29,7 @@ def post_message_to_slack(text, webhook_url):
             % (response.status_code, response.text)
         )
     else:
+        print(f"Slack: {text}")
         return "Slack message send"
 
 
