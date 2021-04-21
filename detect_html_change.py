@@ -55,7 +55,7 @@ def lambda_handler(event, context):
     phone_nr = os.environ.get('phone_nr')
     if event['check_type'] == "html":
         if check_html(url, event['check_line'], event['original_element']):
-            post_message_to_slack(event['message'], slack_webhook)
+            post_message_to_slack(f"{url} html change detected", slack_webhook)
             # boto3.client('sns').publish(PhoneNumber=phone_nr, Message=event['message'])
             return 'html change found!'
         else:
@@ -63,7 +63,7 @@ def lambda_handler(event, context):
 
     if event['check_type'] == "hash":
         if hash_site(url, event['unchanged_hash']):
-            post_message_to_slack(event['message'], slack_webhook)
+            post_message_to_slack(f"{url} hash change detected", slack_webhook)
             # boto3.client('sns').publish(PhoneNumber=phone_nr, Message=event['message'])
             return 'Hash change found!'
         else:
@@ -73,26 +73,23 @@ def lambda_handler(event, context):
         return "No checktype provided"
 
 
-html_event = {
+piccardthof_event = {
     "check_type": "html",
     "url": "https://www.piccardthof.nl/huisjes-te-koop/",
     "check_line": "<h6>Er zijn op dit moment geen huisjes te koop</h6>",
-    "original_element": "h6",
-    "message": "Er staat een huisje te koop op het Piccardthof!"
+    "original_element": "h6"
 }
 
-hash_event = {
+hvdveer_event = {
     "check_type": "hash",
     "url": "https://www.hvdveer.nl",
-    "unchanged_hash": "b624597f6baf137d5416f5c75a4a4ab61097e58fdb73feea422fd836",
-    "message": "My website hvdveer.nl changed",
+    "unchanged_hash": "b624597f6baf137d5416f5c75a4a4ab61097e58fdb73feea422fd836"
 }
 
 tuinwijck_event = {
     "check_type": "hash",
     "url": "https://www.tuinwijck.nl/huisjes-te-koop",
-    "unchanged_hash": "845124c335ba7e9091b3b739dae67ec6055de3d027b0093e5f2a7859",
-    "message": "My website tuinwijck.nl changed",
+    "unchanged_hash": "845124c335ba7e9091b3b739dae67ec6055de3d027b0093e5f2a7859"
 }
 
 # lambda_handler(tuinwijck_event, "context")
