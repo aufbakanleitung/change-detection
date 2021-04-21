@@ -1,5 +1,5 @@
-import boto3
 import requests
+import json
 from bs4 import BeautifulSoup
 
 def check_website(url, check_line, original_element):
@@ -16,6 +16,19 @@ def check_website(url, check_line, original_element):
         print(f"Current website says: {check_line}")
         return True
 
+def post_message_to_slack(text, webhook_url):
+    slack_data = {'text': text}
+    response = requests.post(
+               webhook_url,
+               data=json.dumps(slack_data),
+               headers={'Content-Type': 'application/json'})
+    if response.status_code != 200:
+        raise ValueError(
+            'Request to slack returned an error %s, the response is:\n%s'
+            % (response.status_code, response.text)
+        )
+    else:
+        return "Slack message send"
 
 def lambda_handler(event, context):
     url = event['url']
@@ -23,7 +36,8 @@ def lambda_handler(event, context):
     original_element = event['original_element']
 
     if check_website(url, check_line, original_element):
-        boto3.client('sns').publish(PhoneNumber=event['phone'], Message=event['message'])
+        post_message_to_slack("huisje beschikbaar", event['webhook_url'])
+        # boto3.client('sns').publish(PhoneNumber=event['phone'], Message=event['message'])
         return 'Change found!'
     else:
         return 'No changes detected'
