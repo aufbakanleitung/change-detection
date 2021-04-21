@@ -37,6 +37,7 @@ def lambda_handler(event, context):
     url = event['url']
     unchanged_hash = event['unchanged_hash']
     if hash_site(url, unchanged_hash):
+        print(event['webhook_url'])
         post_message_to_slack("hvdveer.nl hash veranderd", event['webhook_url'])
         # boto3.client('sns').publish(PhoneNumber=event['phone'], Message=event['message'])
         return 'Change found!'
@@ -44,9 +45,9 @@ def lambda_handler(event, context):
         return 'No changes detected'
 
 test_event = {
-    "url": "https://www.hvdveer.nl/",
-    "unchanged_hash": "ee45ce4e2f39e24a1b68b827f6cd76e7766789d57dc81346064f549f",
-    "message": "My website hvdveer.nl changed",
-    "phone": "+31642783886"}
-
-lambda_handler(test_event, 'context')
+  "url": "https://www.hvdveer.nl",
+  "unchanged_hash": "b624597f6baf137d5416f5c75a4a4ab61097e58fdb73feea422fd836",
+  "message": "My website hvdveer.nl changed",
+  "phone": "+31642783886",
+  "webhook_url": "https://hooks.slack.com/services/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"
+}
