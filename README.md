@@ -17,9 +17,7 @@ It is sending this JSON as input:
 {
   "url": "https://www.piccardthof.nl/huisjes-te-koop/",
   "check_line": "<h6>Er zijn op dit moment geen huisjes te koop</h6>",
-  "original_element": "h6",
-  "message": "Er staat een huisje te koop op het Piccardthof!",
-  "phone": "+31642783886"
+  "original_element": "h6"
 }
 ```
 
